@@ -1,5 +1,7 @@
 const path = require("path");
 const express = require("express");
+const passport = require("passport");
+const session = require("express-session");
 const dotenv = require("dotenv");
 const PORT = process.env.PORT || 5000;
 const morgan = require("morgan");
@@ -10,16 +12,31 @@ const app = express();
 // Load config
 dotenv.config({ path: "./config/config.env" });
 
+// Passport config
+require("./config/passport")(passport);
+
 // Logging
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
 
 // Handlebars
-
-// Will throw error if .engine is not after exphbs
+// // Will throw error if .engine is not after exphbs
 app.engine(".hbs", exphbs.engine({ defaultLayout: "main", extname: ".hbs" }));
 app.set("view engine", ".hbs");
+
+// Session middleware
+app.use(
+    session({
+        secret: "keyboard cat",
+        resave: false,
+        saveUninitialized: false,
+    })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Static Folder
 app.use(express.static(path.join(__dirname, "public")));
