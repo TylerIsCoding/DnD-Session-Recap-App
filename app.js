@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const dotenv = require("dotenv");
 const PORT = process.env.PORT || 5000;
 const morgan = require("morgan");
@@ -31,6 +32,9 @@ app.use(
         secret: "keyboard cat",
         resave: false,
         saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGO_URI,
+        }),
     })
 );
 
