@@ -64,6 +64,12 @@ connectDB();
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Set global var
+app.use(function (req, res, next) {
+    res.locals.user = req.user;
+    next();
+});
+
 // Static Folder
 app.use(express.static(path.join(__dirname, "public")));
 

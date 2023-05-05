@@ -23,6 +23,24 @@ router.post("/", ensureAuth, async (req, res) => {
     }
 });
 
+// @desc    Show edit page
+// @route   GET /stories/edit/:id
+router.get("/edit/:id", ensureAuth, async (req, res) => {
+    const story = await Story.findOne({
+        _id: req.params.id,
+    }).lean();
+    if (!story) {
+        return res.render("error/404");
+    }
+    if (story.user != req.user.id) {
+        res.redirect("/stories");
+    } else {
+        res.render("stories/edit", {
+            story,
+        });
+    }
+});
+
 // @desc    Show all stories
 // @route   GET /stories
 router.get("/", ensureAuth, async (req, res) => {
