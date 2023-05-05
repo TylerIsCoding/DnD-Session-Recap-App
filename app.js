@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Handlebars Helpers
-const { formatDate } = require("./helpers/hbs");
+const { formatDate, stripTags, truncate, editIcon } = require("./helpers/hbs");
 
 // Handlebars
 // // Will throw error if .engine is not after exphbs
@@ -36,6 +36,9 @@ app.engine(
     exphbs.engine({
         helpers: {
             formatDate,
+            stripTags,
+            truncate,
+            editIcon,
         },
         defaultLayout: "main",
         extname: ".hbs",
