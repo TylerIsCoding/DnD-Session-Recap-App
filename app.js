@@ -8,7 +8,12 @@ const PORT = process.env.PORT || 5000;
 const morgan = require("morgan");
 const exphbs = require("express-handlebars");
 const connectDB = require("./config/db");
+
 const app = express();
+
+// Body parser
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Load config
 dotenv.config({ path: "./config/config.env" });
@@ -21,9 +26,21 @@ if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
 
+// Handlebars Helpers
+const { formatDate } = require("./helpers/hbs");
+
 // Handlebars
 // // Will throw error if .engine is not after exphbs
-app.engine(".hbs", exphbs.engine({ defaultLayout: "main", extname: ".hbs" }));
+app.engine(
+    ".hbs",
+    exphbs.engine({
+        helpers: {
+            formatDate,
+        },
+        defaultLayout: "main",
+        extname: ".hbs",
+    })
+);
 app.set("view engine", ".hbs");
 
 // Session middleware
@@ -38,6 +55,8 @@ app.use(
     })
 );
 
+connectDB();
+
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,8 +68,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", require("./routes/index"));
 app.use("/auth", require("./routes/auth"));
 app.use("/stories", require("./routes/stories"));
-
-connectDB();
 
 app.listen(PORT, () => {
     console.log(
