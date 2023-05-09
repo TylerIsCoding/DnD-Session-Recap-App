@@ -1,12 +1,22 @@
-/* body {
+body {
     background: url("https://i.imgur.com/hB7K24d.jpeg") 0 0 no-repeat;
     background-position: top;
     background-size: cover;
     height: 100%;
-} */
+}
 
 p {
     margin: 10px 0 !important;
+}
+
+.main-container {
+    background: url("../images/parchment1.jpg");
+    background-position: center;
+    background-size: cover;
+    margin: 20px;
+    padding: 20px;
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.651));
+    border-radius: 3px;
 }
 
 .login-container {
@@ -17,4 +27,48 @@ p {
 
 .fa-small {
     font-size: 16px !important;
+}
+
+.btn-float {
+    float: left;
+    margin-right: 10px;
+}
+
+.img-small {
+    width: 80px;
+}
+
+.center {
+    text-align: center;
+}
+
+.card-content > p {
+    min-height: 120px !important;
+}
+
+.login-h3 {
+    font-size: 2.3rem;
+}
+
+.story {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-div {
+    width: 800px;
+}
+
+.creator-div {
+    width: 300px;
+}
+
+.card
+    .card-action
+    a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(
+        .btn-floating
+    ) {
+    margin-right: unset;
 }

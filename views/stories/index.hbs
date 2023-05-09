@@ -1,4 +1,4 @@
-<h1>Stories</h1>
+<h1 class="center">Entries</h1>
 <div class="row">
     {{#each stories}}
         <div class="col s12 m4">
@@ -8,10 +8,10 @@
                 </div>
                 <div class="card-content center-align">
                     <h5>{{title}}</h5>
-                    <p>{{stripTags (truncate body 30)}}</p>
+                    <p>{{stripTags (truncate body 200)}}</p>
                     <br>
                     <div class="chip">
-                        <img src="{{user.image}}" alt="">
+                        <img src="{{user.image}}" referrerpolicy="no-referrer">
                         <a href="/stories/user/{{user._id}}">{{user.displayName}}</a>
                     </div>
                 </div>
@@ -21,6 +21,6 @@
             </div>
         </div>
     {{else}}
-        <p>No stories to display</p>
+        <p>No entries to display</p>
     {{/each}}
 </div>
