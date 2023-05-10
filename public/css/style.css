@@ -58,11 +58,11 @@ p {
 }
 
 .story-div {
-    width: 800px;
+    max-width: 800px;
 }
 
 .creator-div {
-    width: 300px;
+    max-width: 300px;
 }
 
 .card
