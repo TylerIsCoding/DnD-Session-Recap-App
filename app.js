@@ -12,8 +12,6 @@ const connectDB = require("./config/db");
 
 const app = express();
 
-connectDB();
-
 // Body parser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -39,6 +37,8 @@ require("./config/passport")(passport);
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
+
+connectDB();
 
 // Handlebars Helpers
 const {
