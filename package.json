@@ -1,10 +1,10 @@
 {
-  "name": "storyapp",
+  "name": "questlog",
   "version": "1.0.0",
   "description": "App to create public and private Dungeon and Dragons scenarios",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "cross-env NODE_ENV=production node app.js",
     "dev": "cross-env NODE_ENV=production nodemon app.js"
   },
   "author": "Tyler McKenna",
