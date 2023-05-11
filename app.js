@@ -12,6 +12,8 @@ const connectDB = require("./config/db");
 
 const app = express();
 
+connectDB();
+
 // Body parser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -94,8 +96,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", require("./routes/index"));
 app.use("/auth", require("./routes/auth"));
 app.use("/stories", require("./routes/stories"));
-
-connectDB();
 
 app.listen(PORT, () => {
     console.log(
