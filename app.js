@@ -77,8 +77,6 @@ app.use(
     })
 );
 
-connectDB();
-
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
@@ -96,6 +94,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", require("./routes/index"));
 app.use("/auth", require("./routes/auth"));
 app.use("/stories", require("./routes/stories"));
+
+connectDB();
 
 app.listen(PORT, () => {
     console.log(
