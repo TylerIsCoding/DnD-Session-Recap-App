@@ -92,3 +92,14 @@ p {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.row .col.m4 {
+    width: 400px;
+    margin-left: auto;
+    left: auto;
+    right: auto;
+}
+
+.container {
+    width: unset !important;
+}
