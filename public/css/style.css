@@ -20,7 +20,7 @@ p {
 }
 
 .login-container {
-    width: 400px;
+    max-width: 400px;
     margin-top: 50px;
     text-align: center;
 }
@@ -102,4 +102,8 @@ p {
 
 .container {
     width: unset !important;
+}
+
+.login-card {
+    min-width: 400px;
 }
