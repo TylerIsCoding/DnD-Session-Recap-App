@@ -85,3 +85,10 @@ p {
     text-decoration: underline !important;
     color: red;
 }
+
+.story-title {
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
