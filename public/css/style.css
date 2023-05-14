@@ -46,10 +46,6 @@ p {
     min-height: 120px !important;
 }
 
-.card .card-content {
-    min-height: 360px;
-}
-
 .login-h3 {
     font-size: 2.3rem;
 }
