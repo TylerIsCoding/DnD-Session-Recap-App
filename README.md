@@ -2,7 +2,7 @@
 <img src="https://i.imgur.com/ehurLB1.jpg">
 <br>
 <p>Quest Log is a web application that leverages Google OAuth for user authentication. The application enables users to create and manage session notes, recaps, and any other information they need to store for our ongoing Dungeons and Dragons campaign.</p>
-<p>Link to website: <a href="https://quest-log.cyclic.app/dashboard">Quest Log</a></p>
+<p>Link to website: <a href="https://quest-log.cyclic.app">Quest Log</a></p>
 <h2>How It's Made</h2>
 <p><strong>Tech Used:</strong> MongoDB, Mongoose, Express.js, Handlebars, Node.js, HTML5, CSS3, and JavaScript</p>
 <br>
