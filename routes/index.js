@@ -12,6 +12,19 @@ router.get("/", ensureGuest, (req, res) => {
     });
 });
 
+// @desc DM Page
+// @route GET /dm
+router.get('/dm', ensureAuth, async (req, res) => {
+    try {
+        res.render("dm", {
+            layout: "dm"
+        })
+    } catch (err) {
+        console.error(err);
+        res.render("error/500")
+    }
+})
+
 // @desc Dashboard
 // @route GET /dashboard
 router.get("/dashboard", ensureAuth, async (req, res) => {

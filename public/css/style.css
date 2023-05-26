@@ -1,3 +1,9 @@
+/* Fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&display=swap');
+
+/* Fonts End */
+
 body {
     background-color: black;
     background: url() 0 0 no-repeat;
@@ -102,10 +108,29 @@ p {
     right: auto;
 }
 
-.container {
-    width: unset !important;
-}
-
 .login-card {
     min-width: 400px;
+}
+
+.nav-wrapper.container {
+    width: 90% !important;
+    max-width:unset;
+}
+
+.brand-logo {
+    font-family: 'Aoboshi One', serif;
+}
+
+/* DM Page Styling */
+
+body.dm-body {
+    background: url("/images/dm-red.jpg") 0 0 no-repeat;
+    background-color: black;
+    background-position: top;
+    background-size: cover;
+    height: 100%;
+}
+
+.dm-header {
+    background-color: #264C5E !important;
 }

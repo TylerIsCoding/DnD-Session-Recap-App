@@ -9,6 +9,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    // dm: {
+    //     type: Boolean,
+    //     required: true,
+    // },
     firstName: {
         type: String,
         required: true,
