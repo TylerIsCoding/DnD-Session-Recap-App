@@ -1,8 +1,30 @@
 /* Fonts */
 
 @import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Corben&display=swap');
 
 /* Fonts End */
+
+/* Main Styling */
+
+button {
+    cursor: pointer;
+}
+
+/* Variables */ 
+
+:root {
+    /* DM Colors */
+    --main-tan: #CEC2AE;
+    --btn-green: #478C2F;
+    --btn-green-hover: #60bb41;
+    --btn-green-down:#2e5c1e;
+    --btn-red: #A34C50;
+    --btn-red-hover: #d4666b;
+    --btn-red-down: #6e3336;
+    /* Fonts */
+    --dm-data-font: 'Corben', cursive;
+}
 
 body {
     background-color: black;
@@ -124,13 +146,217 @@ p {
 /* DM Page Styling */
 
 body.dm-body {
-    background: url("/images/dm-red.jpg") 0 0 no-repeat;
+    background: url("/images/dm-red.jpg") 0 0 repeat-y;
     background-color: black;
     background-position: top;
     background-size: cover;
-    height: 100%;
 }
 
 .dm-header {
     background-color: #264C5E !important;
+}
+
+.dm-container {
+    width: 100%;
+    padding: 2rem;
+}
+
+.main-dm-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.dm-column {
+    border: 2px solid blue;
+    padding: 10px;
+}
+
+.dm-column.side-box {
+    flex-basis: 20%;
+}
+
+.dm-column.center-box {
+    flex-basis: 60%;
+}
+
+/* Dice Section */
+
+.dice-results {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.dice-results-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--main-tan);
+    height: 100px;
+    min-width: 60%;
+    border-radius: 50px;
+    font-family: var(--dm-data-font);
+    font-size: 3rem;
+}
+
+.dice-main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.dice-images {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--main-tan);
+    padding: 1rem;
+    border-radius: 60px;
+    width:120px;
+    gap: 10px;
+}
+
+.dice-image {
+    height: 100px;
+    max-width: 100px;
+}
+
+.dice-numbers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    gap: 10px;
+    margin-left: 2rem;
+
+}
+
+.number-holder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    min-width: 70px;
+    background-color: var(--main-tan);
+    border-radius: 20px;
+    text-align: center;
+    font-family: var(--dm-data-font);
+    font-size: 3rem;
+}
+
+/* Buttons */
+
+.dice-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    gap: 10px;
+    margin-left: 2rem;
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    gap: 15px;
+}
+
+.sub-dice, .add-dice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--dm-data-font);
+    font-size: 4rem;
+    margin: auto;
+    padding-bottom: 10%;
+}
+
+.add-dice {
+    height: 60px;
+    width: 60px;
+    background-color: var(--btn-green);
+    color:white;
+    border: none;
+    border-radius: 20px;
+}
+
+.add-dice:focus {
+    background-color: var(--btn-green);
+}
+
+.add-dice:hover {
+    background-color: var(--btn-green-hover);
+}
+
+.add-dice:active {
+    background-color: var(--btn-green-down);
+}
+
+.sub-dice {
+    height: 60px;
+    width: 60px;
+    background-color: var(--btn-red);
+    color:white;
+    border: none;
+    border-radius: 20px;
+}
+
+.sub-dice:focus {
+    background-color: var(--btn-red);
+}
+
+.sub-dice:hover {
+    background-color: var(--btn-red-hover);
+}
+
+.sub-dice:active {
+    background-color: var(--btn-red-down);
+}
+
+.dice-roll {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+}
+
+.roll-dice {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: var(--dm-data-font);
+    font-size: 4rem;
+    color: white;
+    background-color: #E94445;
+    border: none;
+    min-width: 70%;
+    height: 100px;
+    border-radius: 50px;
+    padding-bottom: 3%;
+}
+
+.roll-dice:focus {
+    background-color: #E94445;
+}
+
+.roll-dice:hover {
+    background-color: #ee2a2a;
+}
+
+.roll-dice:active {
+    background-color: #a12d2d;
 }
