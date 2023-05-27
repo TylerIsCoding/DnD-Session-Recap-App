@@ -332,19 +332,19 @@ body.dm-body {
     margin: 2rem;
 }
 
-.roll-dice {
+.roll-dice, .clear-btn {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     font-family: var(--dm-data-font);
-    font-size: 4rem;
+    font-size: 3.5rem;
     color: white;
     background-color: #E94445;
     border: none;
-    min-width: 70%;
-    height: 100px;
+    min-width: 60%;
+    height: 80px;
     border-radius: 50px;
     padding-bottom: 3%;
 }
@@ -362,5 +362,20 @@ body.dm-body {
 }
 
 .clear-btn {
+    background-color: var(--btn-red);
+    padding-top: .5rem;
+    font-size: 2rem;
+    height: 60px;
+}
 
+.clear-btn:focus {
+    background-color: var(--btn-red);
+}
+
+.clear-btn:hover {
+    background-color: var(--btn-red-hover);
+}
+
+.clear-btn:active {
+    background-color: var(--btn-red-down);
 }

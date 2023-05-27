@@ -30,6 +30,7 @@ const addD20Button = document.getElementById('add-d20');
 const subD202Button = document.getElementById('sub-d20');
 const d20Holder = document.getElementById('d20-holder');
 
+// Buttons
 const clearBtn = document.getElementById('clear-btn')
 const rollAll = document.getElementById('roll-btn');
 
@@ -81,7 +82,7 @@ function addDice(sides, holder) {
 function removeDice(sides, holder) {
     for (let i = bag.dice.length - 1; i >= 0; i--) {
        if (bag.dice[i].numOfFaces === sides) {
-        bag.dice.pop();
+        bag.dice.splice(i, 1);
         break;
        }
     }
@@ -92,9 +93,9 @@ function removeDice(sides, holder) {
     holder.innerHTML = count === 0 ? '' : count;
 }
 
-let addArray = [addD4Button, addD6Button, addD8Button, addD10Button, addD12Button, addD20Button]
-let holderArray = [d4Holder, d6Holder, d8Holder, d10Holder, d12Holder, d20Holder]
-let subArray = [subD4Button, subD6Button, subD8Button, subD10Button, subD12Button, subD202Button]
+let addArray = [addD4Button, addD6Button, addD8Button, addD10Button, addD12Button, addD20Button];
+let holderArray = [d4Holder, d6Holder, d8Holder, d10Holder, d12Holder, d20Holder];
+let subArray = [subD4Button, subD6Button, subD8Button, subD10Button, subD12Button, subD202Button];
 
 clearBtn.addEventListener('click', () => {
     bag.clear();
@@ -121,3 +122,4 @@ subArray.forEach((button, i) => {
         removeDice(num, holderArray[i]);
     }) 
 })
+
