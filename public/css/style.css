@@ -167,7 +167,7 @@ body.dm-body {
 }
 
 .dm-column {
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     padding: 10px;
 }
 
@@ -324,7 +324,7 @@ body.dm-body {
     background-color: var(--btn-red-down);
 }
 
-.dice-roll {
+.dice-roll, .clear {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -359,4 +359,8 @@ body.dm-body {
 
 .roll-dice:active {
     background-color: #a12d2d;
+}
+
+.clear-btn {
+
 }
