@@ -51,6 +51,29 @@ class Bag {
         this.dice = [];
         results.innerHTML = ''
     }
+    addDice(sides, holder) {
+        const newDice = new Dice(sides);
+        this.dice.push(newDice);
+        console.log(`New D${sides} added to bag.`)
+        let count = 0;
+        this.dice.forEach(dice => {
+            if (dice.numOfFaces === sides) count++
+        })
+        holder.innerHTML = count;
+    }
+    removeDice(sides, holder) {
+        for (let i = this.dice.length - 1; i >= 0; i--) {
+           if (this.dice[i].numOfFaces === sides) {
+            this.dice.splice(i, 1);
+            break;
+           }
+        }
+        let count = 0;
+        this.dice.forEach(dice => {
+            if (dice.numOfFaces === sides) count++
+        })
+        holder.innerHTML = count === 0 ? '' : count;
+    }
 }
 
 class Dice {
@@ -67,31 +90,6 @@ class Dice {
 }
 
 const bag = new Bag()
-
-function addDice(sides, holder) {
-    const newDice = new Dice(sides);
-    bag.dice.push(newDice)
-    console.log(`New D${sides} added to bag.`)
-    let count = 0;
-    bag.dice.forEach(dice => {
-        if (dice.numOfFaces === sides) count++
-    })
-    holder.innerHTML = count;
-}
-
-function removeDice(sides, holder) {
-    for (let i = bag.dice.length - 1; i >= 0; i--) {
-       if (bag.dice[i].numOfFaces === sides) {
-        bag.dice.splice(i, 1);
-        break;
-       }
-    }
-    let count = 0;
-    bag.dice.forEach(dice => {
-        if (dice.numOfFaces === sides) count++
-    })
-    holder.innerHTML = count === 0 ? '' : count;
-}
 
 let addArray = [addD4Button, addD6Button, addD8Button, addD10Button, addD12Button, addD20Button];
 let holderArray = [d4Holder, d6Holder, d8Holder, d10Holder, d12Holder, d20Holder];
@@ -112,14 +110,14 @@ rollAll.addEventListener('click', () => {
 addArray.forEach((button, i) => {
     let num = i === 0 ? 4 : i === 1 ? 6 : i === 2 ? 8 : i === 3 ? 10 : i === 4 ? 12 : 20;
     button.addEventListener('click', () => {
-        addDice(num, holderArray[i])
+        bag.addDice(num, holderArray[i]);
     })
 })
 
 subArray.forEach((button, i) => {
     let num = i === 0 ? 4 : i === 1 ? 6 : i === 2 ? 8 : i === 3 ? 10 : i === 4 ? 12 : 20;
     button.addEventListener('click', () => {
-        removeDice(num, holderArray[i]);
+        bag.removeDice(num, holderArray[i]);
     }) 
 })
 
