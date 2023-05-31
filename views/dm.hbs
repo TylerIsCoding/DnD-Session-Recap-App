@@ -20,7 +20,6 @@
                 {{!-- <div class="number-holder" id="d100-holder"></div> --}}
                 <div class="number-holder" id="d12-holder"></div>
                 <div class="number-holder" id="d20-holder"></div>
-   
             </div>
             <div class="dice-buttons">
                 <div class="button-row">
@@ -54,15 +53,26 @@
             </div>
    </div>
    <div class="dice-roll">
-    <button class="roll-dice" id="roll-btn">Roll</button>
+        <button class="roll-dice" id="roll-btn">Roll</button>
    </div>
    <div class="clear">
-    <button class="clear-btn" id="clear-btn">Clear</button>
+        <button class="clear-btn" id="clear-btn">Clear</button>
    </div>
 </section>
 
 <section class="dm-column center-box">
-   
+    <section class="dice-history-container">
+        <div class="dice-history-top-text">Roll History</div>
+        <div class="dice-history-holder">
+            <table class="history-table">
+                <tr class="history-row" id="history-table-row">
+                </tr>
+            </table>
+        </div>
+        <div class="clear history-bottom">
+            <button class="history-clear clear-btn" id="history-clear-btn">Clear</button>
+        </div>
+    </section>
 </section>
 
 <section class="dm-column side-box dm-initiative-container">

@@ -1,4 +1,5 @@
 const results = document.getElementById("result-text");
+const rollTable = document.getElementById("history-table-row");
 const rollSound = new Audio("/audio/roll.wav");
 
 // D4
@@ -34,6 +35,7 @@ const d20Holder = document.getElementById("d20-holder");
 // Buttons
 const clearBtn = document.getElementById("clear-btn");
 const rollAll = document.getElementById("roll-btn");
+const histClear = document.getElementById("history-clear-btn");
 
 class Bag {
     constructor() {
@@ -46,7 +48,10 @@ class Bag {
             console.log(dice.value());
             total += dice.value();
         });
-        rollSound.play();
+        if (total > 0) {
+            history.addItem(total);
+            rollSound.play();
+        }
         return total;
     }
     clear() {
@@ -91,7 +96,22 @@ class Dice {
     }
 }
 
+class rollHistory {
+    addItem(data) {
+        let newTd = document.createElement("td");
+        newTd.setAttribute("class", "history-td");
+        newTd.innerHTML = data;
+        rollTable.prepend(newTd);
+    }
+    clear() {
+        while (rollTable.firstChild) {
+            rollTable.removeChild(rollTable.firstChild);
+        }
+    }
+}
+
 const bag = new Bag();
+const history = new rollHistory();
 
 let addArray = [
     addD4Button,
@@ -129,6 +149,8 @@ rollAll.addEventListener("click", () => {
     const roll = bag.rollAll();
     results.innerHTML = roll === 0 ? "" : roll;
 });
+
+histClear.addEventListener("click", history.clear);
 
 addArray.forEach((button, i) => {
     let num =
