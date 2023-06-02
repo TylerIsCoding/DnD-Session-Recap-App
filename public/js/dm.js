@@ -1,5 +1,16 @@
+// Modals
+const addEnemyModal = document.getElementById("enemyModal");
+
+// Text boxes / inputs
 const results = document.getElementById("result-text");
+const enemyNameInput = document.getElementById("enemyNameInput");
+const enemyHealthInput = document.getElementById("enemyHealthInput");
+
+// Tables
 const rollTable = document.getElementById("history-table-row");
+const enemyTable = document.getElementById("enemy-table");
+
+// Audio
 const rollSound = new Audio("/audio/roll.wav");
 
 // D4
@@ -33,9 +44,15 @@ const subD202Button = document.getElementById("sub-d20");
 const d20Holder = document.getElementById("d20-holder");
 
 // Buttons
-const clearBtn = document.getElementById("clear-btn");
-const rollAll = document.getElementById("roll-btn");
-const histClear = document.getElementById("history-clear-btn");
+const closeModalButton = document.getElementById("closeModal");
+const clearDiceButton = document.getElementById("dice-clear-btn");
+const rollButton = document.getElementById("roll-btn");
+const rollHistoryClearButton = document.getElementById("history-clear-btn");
+const addEnemyButton = document.getElementById("add-enemy");
+const clearEnemiesButton = document.getElementById("clear-enemies");
+const acceptEnemyButton = document.getElementById("acceptEnemy");
+
+// Classes
 
 class Bag {
     constructor() {
@@ -110,8 +127,72 @@ class rollHistory {
     }
 }
 
+class Enemy {
+    constructor(name, hp, id) {
+        this.name = name;
+        this.maxHp = hp;
+        this.hp = hp;
+        this.id = id;
+    }
+    subHealth(dmg = 5) {
+        this.hp -= dmg;
+        if (hp <= 0) {
+            console.log(`${this.name} has been slain!`);
+        }
+    }
+    addHealth(heal = 5) {
+        this.hp += heal;
+    }
+    returnHealth() {
+        return `${this.hp}/${this.maxHp}`;
+    }
+}
+
+class Enemies {
+    constructor() {
+        this.enemyArray = [];
+    }
+    addEnemy(name, hp) {
+        let id = enemies.generateId();
+        let newEnemy = new Enemy(name, hp, id);
+        this.enemyArray.push(newEnemy);
+        let newTr = document.createElement("tr");
+        let nameTd = document.createElement("td");
+        let healthTd = document.createElement("td");
+        let healDamageFieldTd = document.createElement("td");
+        let buttonsTd = document.createElement("td");
+        newTr.setAttribute("class", "enemy-info-row");
+        nameTd.setAttribute("class", "enemy-name");
+        healthTd.setAttribute("class", "enemy-health");
+        healDamageFieldTd.setAttribute("class", "healDamageInput");
+        buttonsTd.setAttribute("class", "enemy-buttons");
+        nameTd.innerHTML = newEnemy.name;
+        healthTd.innerHTML = newEnemy.returnHealth();
+        healDamageFieldTd.innerHTML = `<input type="number" id="input-${newEnemy.id}" class="healDamageInputBox">`;
+        buttonsTd.innerHTML = `<button class="health-plus-btn green-btn" id="heal-${newEnemy.id}">+</button><button class="health-minus-btn red-btn" id="damage-${newEnemy.id}">-</button>`;
+        newTr.append(nameTd, healthTd, healDamageFieldTd, buttonsTd);
+        enemyTable.append(newTr);
+    }
+    clearEnemies() {
+        this.enemyArray = [];
+        while (enemyTable.firstChild) {
+            enemyTable.removeChild(enemyTable.firstChild);
+        }
+    }
+    generateId() {
+        let id = 0;
+        if (this.enemyArray.length > 0) {
+            id = this.enemyArray[this.enemyArray.length - 1].id + 1;
+        }
+        return Number(id);
+    }
+}
+
+// Instantiation
+
 const bag = new Bag();
 const history = new rollHistory();
+const enemies = new Enemies();
 
 let addArray = [
     addD4Button,
@@ -137,20 +218,40 @@ let subArray = [
     subD12Button,
     subD202Button,
 ];
+let healButtons = [];
+let damageButtons = [];
 
-clearBtn.addEventListener("click", () => {
+// Functions
+
+function closeModal() {
+    enemyNameInput.value = "";
+    enemyHealthInput.value = "";
+    addEnemyModal.style.display = "none";
+}
+
+// Event Listeners
+
+clearDiceButton.addEventListener("click", () => {
     bag.clear();
     holderArray.forEach((holder) => {
         holder.innerHTML = "";
     });
 });
 
-rollAll.addEventListener("click", () => {
+rollButton.addEventListener("click", () => {
     const roll = bag.rollAll();
     results.innerHTML = roll === 0 ? "" : roll;
 });
 
-histClear.addEventListener("click", history.clear);
+rollHistoryClearButton.addEventListener("click", history.clear);
+
+addEnemyButton.addEventListener("click", () => {
+    addEnemyModal.style.display = "flex";
+});
+
+clearEnemiesButton.addEventListener("click", () => {
+    enemies.clearEnemies();
+});
 
 addArray.forEach((button, i) => {
     let num =
@@ -187,3 +288,22 @@ subArray.forEach((button, i) => {
         bag.removeDice(num, holderArray[i]);
     });
 });
+
+acceptEnemyButton.addEventListener("click", () => {
+    let name = enemyNameInput.value;
+    let hp = parseInt(enemyHealthInput.value);
+    if (!name || !hp || name.length > 15 || hp < 1 || hp > 999) {
+        closeModal();
+        return;
+    }
+    enemies.addEnemy(name, hp);
+    closeModal();
+});
+
+closeModalButton.addEventListener("click", closeModal);
+
+window.onclick = function (event) {
+    if (event.target == addEnemyModal) {
+        closeModal();
+    }
+};

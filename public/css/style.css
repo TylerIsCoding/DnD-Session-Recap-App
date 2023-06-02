@@ -42,6 +42,18 @@ p {
     margin: 10px 0 !important;
 }
 
+input[type="number"]:not(.browser-default),
+input[type="text"]:not(.browser-default) {
+    background-color: #494242;
+    color: white;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .main-container {
     background: url("/images/parchment1.jpg");
     background-position: center;
@@ -160,6 +172,76 @@ body.dm-body {
     background-color: #264c5e !important;
 }
 
+.modal-section {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.178);
+    backdrop-filter: blur(6px);
+}
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 400px;
+    background: rgb(37, 37, 37);
+    border-radius: 40px;
+    color: rgb(255, 255, 255);
+    box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.445),
+        5px 5px 5px rgba(0, 0, 0, 0.5), inset -5px -5px 5px rgba(0, 0, 0, 0.281);
+}
+
+.modal-content {
+    height: 100%;
+    width: 100%;
+}
+
+.inputs {
+    min-height: 100%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.modal-input {
+    font-family: var(--dm-data-font);
+    font-size: 1.5rem !important;
+    width: 80%;
+    text-align: center;
+}
+
+.close {
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.close:hover {
+    cursor: pointer;
+}
+
+.acceptButton {
+    height: 60px;
+    width: 50%;
+    border-radius: 50px;
+    font-family: var(--dm-data-font);
+    font-size: 2rem;
+    box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.445),
+        5px 5px 5px rgba(0, 0, 0, 0.5), inset -5px -5px 5px rgba(0, 0, 0, 0.281);
+}
+
 .dm-container {
     width: 100%;
     padding: 2rem;
@@ -269,6 +351,18 @@ body.dm-body {
     margin-left: 2rem;
 }
 
+.green-btn {
+    background-color: var(--btn-green);
+    color: white;
+    border: none;
+}
+
+.red-btn {
+    background-color: var(--btn-red);
+    color: white;
+    border: none;
+}
+
 .button-row {
     display: flex;
     flex-direction: row;
@@ -294,44 +388,26 @@ body.dm-body {
 .add-dice {
     height: 60px;
     width: 60px;
-    background-color: var(--btn-green);
-    color: white;
-    border: none;
     border-radius: 20px;
 }
 
-.add-dice:focus {
+.green-btn:focus {
     background-color: var(--btn-green);
 }
 
-.add-dice:hover {
+.green-btn:hover {
     background-color: var(--btn-green-hover);
 }
 
-.add-dice:active {
+.green-btn:active {
     background-color: var(--btn-green-down);
 }
 
 .sub-dice {
     height: 60px;
     width: 60px;
-    background-color: var(--btn-red);
-    color: white;
-    border: none;
     border-radius: 20px;
     padding-bottom: 15%;
-}
-
-.sub-dice:focus {
-    background-color: var(--btn-red);
-}
-
-.sub-dice:hover {
-    background-color: var(--btn-red-hover);
-}
-
-.sub-dice:active {
-    background-color: var(--btn-red-down);
 }
 
 .dice-roll,
@@ -383,15 +459,15 @@ body.dm-body {
     height: 60px;
 }
 
-.clear-btn:focus {
+.red-btn:focus {
     background-color: var(--btn-red);
 }
 
-.clear-btn:hover {
+.red-btn:hover {
     background-color: var(--btn-red-hover);
 }
 
-.clear-btn:active {
+.red-btn:active {
     background-color: var(--btn-red-down);
 }
 
@@ -405,47 +481,158 @@ body.dm-body {
     flex-direction: row;
 }
 
-.dice-history-container {
+.dice-history-container,
+.health-tracker-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 20%;
+    min-width: 240px;
     margin: 20px;
 }
 
-.dice-history-top-text {
+.dice-history-top-text,
+.health-tracker-top-text {
     text-align: center;
     font-family: var(--dm-data-font);
     font-size: 2.5rem;
-    margin: 10px;
+    margin: 30px;
 }
 
 .dice-history-holder {
     background-color: white;
     border-radius: 20px;
     width: 100%;
-    height: 100%;
+    height: 750px;
     box-shadow: inset 0px 8px 15px rgba(0, 0, 0, 0.74);
+    overflow: auto;
+}
+
+.dice-history-holder::-webkit-scrollbar,
+.health-tracker-holder::-webkit-scrollbar {
+    width: 10px;
+}
+
+.dice-history-holder::-webkit-scrollbar-track,
+.health-tracker-holder::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 20px;
+}
+
+.dice-history-holder::-webkit-scrollbar-thumb,
+.health-tracker-holder::-webkit-scrollbar-thumb {
+    background-color: var(--btn-red);
+    border-radius: 10px;
 }
 
 .history-bottom {
     width: 100%;
 }
 
-.history-table {
+.history-table,
+.health-table {
     table-layout: auto;
 }
 
-.history-row {
+.history-row,
+.enemy-row {
     display: flex;
     flex-direction: column;
     border: none;
 }
 
-.history-td {
+.history-td,
+.enemy-name,
+.enemy-health {
     text-align: center;
     font-family: var(--dm-data-font);
     font-size: 3rem;
     padding: 0;
+}
+
+.health-tracker-container {
+    width: 75%;
+    min-width: 1100px;
+}
+
+.health-tracker-holder {
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    height: 750px;
+    box-shadow: inset 0px 8px 15px rgba(0, 0, 0, 0.74);
+    overflow: auto;
+    padding-top: 5px;
+}
+
+.health-tracker-bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.enemy-add,
+.enemy-clear {
+    font-family: var(--dm-data-font);
+    font-size: 2.2rem;
+    height: 60px;
+    border-radius: 50px;
+    box-shadow: inset 5px 5px 10px rgba(255, 255, 255, 0.315),
+        5px 10px 10px rgba(0, 0, 0, 0.5),
+        inset -5px -5px 5px rgba(0, 0, 0, 0.281);
+    width: 300px;
+}
+
+.enemy-info-row {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.enemy-info-row > td {
+    width: 200px;
+}
+
+.enemy-buttons {
+    text-align: center;
+}
+
+.health-plus-btn,
+.health-minus-btn {
+    font-family: var(--dm-data-font);
+    font-size: 3rem;
+    width: 60px;
+    margin: 0px 5px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.445),
+        2px 2px 2px rgba(0, 0, 0, 0.5), inset -5px -5px 5px rgba(0, 0, 0, 0.281);
+}
+
+.healDamageInput {
+    width: 120px;
+    text-align: center;
+}
+
+.healDamageInputBox {
+    background-color: rgba(227, 227, 227, 0.315) !important;
+    color: black !important;
+    width: 100px !important;
+    margin: 0 !important;
+    height: 80% !important;
+    padding: 10px !important;
+    text-align: center;
+    font-family: var(--dm-data-font);
+    font-size: 2rem !important;
+    box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.281) !important;
+    border-radius: 10px !important;
+}
+
+.healDamageInputBox:focus {
+    outline-width: 0;
 }
