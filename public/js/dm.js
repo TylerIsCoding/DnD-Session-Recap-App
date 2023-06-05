@@ -68,6 +68,10 @@ class Bag {
         if (total > 0) {
             history.addItem(total);
             rollSound.play();
+            localStorage.setItem(
+                "storedRollHist",
+                JSON.stringify(history.rollArr)
+            );
         }
         return total;
     }
@@ -114,34 +118,52 @@ class Dice {
 }
 
 class rollHistory {
+    constructor() {
+        this.rollArr = [];
+    }
     addItem(data) {
         let newTd = document.createElement("td");
         newTd.setAttribute("class", "history-td");
         newTd.innerHTML = data;
         rollTable.prepend(newTd);
+        this.rollArr.unshift(Number(data));
     }
     clear() {
+        history = new rollHistory();
         while (rollTable.firstChild) {
             rollTable.removeChild(rollTable.firstChild);
         }
+        localStorage.setItem("storedRollHist", []);
     }
 }
 
 class Enemy {
-    constructor(name, hp, id) {
+    constructor(name, maxHp, hp, id) {
         this.name = name;
-        this.maxHp = hp;
+        this.maxHp = maxHp;
         this.hp = hp;
         this.id = id;
     }
-    subHealth(dmg = 5) {
+    subHealth(dmg) {
         this.hp -= dmg;
-        if (hp <= 0) {
+        if (this.hp <= 0) {
+            this.hp = 0;
             console.log(`${this.name} has been slain!`);
         }
+        localStorage.setItem(
+            "storedEnemies",
+            JSON.stringify(enemies.enemyArray)
+        );
     }
-    addHealth(heal = 5) {
+    addHealth(heal) {
         this.hp += heal;
+        if (this.hp > this.maxHp) {
+            this.hp = this.maxHp;
+        }
+        localStorage.setItem(
+            "storedEnemies",
+            JSON.stringify(enemies.enemyArray)
+        );
     }
     returnHealth() {
         return `${this.hp}/${this.maxHp}`;
@@ -152,47 +174,45 @@ class Enemies {
     constructor() {
         this.enemyArray = [];
     }
-    addEnemy(name, hp) {
-        let id = enemies.generateId();
-        let newEnemy = new Enemy(name, hp, id);
+    addEnemy(name, maxHp, hp) {
+        let id = this.generateId(enemies);
+        let newEnemy = new Enemy(name, maxHp, hp, id);
         this.enemyArray.push(newEnemy);
-        let newTr = document.createElement("tr");
-        let nameTd = document.createElement("td");
-        let healthTd = document.createElement("td");
-        let healDamageFieldTd = document.createElement("td");
-        let buttonsTd = document.createElement("td");
-        newTr.setAttribute("class", "enemy-info-row");
-        nameTd.setAttribute("class", "enemy-name");
-        healthTd.setAttribute("class", "enemy-health");
-        healDamageFieldTd.setAttribute("class", "healDamageInput");
-        buttonsTd.setAttribute("class", "enemy-buttons");
-        nameTd.innerHTML = newEnemy.name;
-        healthTd.innerHTML = newEnemy.returnHealth();
-        healDamageFieldTd.innerHTML = `<input type="number" id="input-${newEnemy.id}" class="healDamageInputBox">`;
-        buttonsTd.innerHTML = `<button class="health-plus-btn green-btn" id="heal-${newEnemy.id}">+</button><button class="health-minus-btn red-btn" id="damage-${newEnemy.id}">-</button>`;
-        newTr.append(nameTd, healthTd, healDamageFieldTd, buttonsTd);
-        enemyTable.append(newTr);
+        localStorage.setItem("storedEnemies", JSON.stringify(this.enemyArray));
+        createTableData(newEnemy);
+    }
+    loadExistingEnemy(enemy) {
+        let id = enemy.id;
+        let name = enemy.name;
+        let maxHp = enemy.maxHp;
+        let hp = enemy.hp;
+        let newEnemy = new Enemy(name, maxHp, hp, id);
+        this.enemyArray.push(newEnemy);
+        createTableData(newEnemy);
     }
     clearEnemies() {
         this.enemyArray = [];
         while (enemyTable.firstChild) {
             enemyTable.removeChild(enemyTable.firstChild);
         }
+        localStorage.removeItem("storedEnemies");
     }
-    generateId() {
+    generateId(currentEnemies) {
         let id = 0;
-        if (this.enemyArray.length > 0) {
-            id = this.enemyArray[this.enemyArray.length - 1].id + 1;
+        if (currentEnemies.enemyArray.length > 0) {
+            id =
+                currentEnemies.enemyArray[currentEnemies.enemyArray.length - 1]
+                    .id + 1;
         }
-        return Number(id);
+        return id;
     }
 }
 
 // Instantiation
 
 const bag = new Bag();
-const history = new rollHistory();
 const enemies = new Enemies();
+let history = new rollHistory();
 
 let addArray = [
     addD4Button,
@@ -218,10 +238,8 @@ let subArray = [
     subD12Button,
     subD202Button,
 ];
-let healButtons = [];
-let damageButtons = [];
 
-// Functions
+//=== Functions ===//
 
 function closeModal() {
     enemyNameInput.value = "";
@@ -229,7 +247,46 @@ function closeModal() {
     addEnemyModal.style.display = "none";
 }
 
-// Event Listeners
+function createTableData(enemy) {
+    let newTr = document.createElement("tr");
+    let nameTd = document.createElement("td");
+    let healthTd = document.createElement("td");
+    let healDamageFieldTd = document.createElement("td");
+    let buttonsTd = document.createElement("td");
+    newTr.setAttribute("class", "enemy-info-row");
+    newTr.setAttribute("id", `enemy-${enemy.id}`);
+    nameTd.setAttribute("class", "enemy-name");
+    healthTd.setAttribute("class", "enemy-health");
+    healDamageFieldTd.setAttribute("class", "healDamageInput");
+    buttonsTd.setAttribute("class", "enemy-buttons");
+    nameTd.innerHTML = enemy.name;
+    healthTd.innerHTML = enemy.returnHealth();
+    healDamageFieldTd.innerHTML = `<input type="number" id="input-${enemy.id}" class="healDamageInputBox">`;
+    buttonsTd.innerHTML = `<button class="health-plus-btn green-btn" id="heal-${enemy.id}">+</button><button class="health-minus-btn red-btn" id="damage-${enemy.id}">-</button>`;
+    newTr.append(nameTd, healthTd, healDamageFieldTd, buttonsTd);
+    enemyTable.append(newTr);
+}
+
+//=== Event Listeners ===//
+
+// Dice
+
+addArray.forEach((button, i) => {
+    let keyVals = { 0: 4, 1: 6, 2: 8, 3: 10, 4: 12, 5: 20 };
+    let num = Object.values(keyVals)[i];
+    button.addEventListener("click", () => {
+        bag.addDice(num, holderArray[i]);
+    });
+});
+
+subArray.forEach((button, i) => {
+    let keyVals = { 0: 4, 1: 6, 2: 8, 3: 10, 4: 12, 5: 20 };
+    let num = Object.values(keyVals)[i];
+    console.log(num);
+    button.addEventListener("click", () => {
+        bag.removeDice(num, holderArray[i]);
+    });
+});
 
 clearDiceButton.addEventListener("click", () => {
     bag.clear();
@@ -245,6 +302,8 @@ rollButton.addEventListener("click", () => {
 
 rollHistoryClearButton.addEventListener("click", history.clear);
 
+// Health Tracker
+
 addEnemyButton.addEventListener("click", () => {
     addEnemyModal.style.display = "flex";
 });
@@ -253,52 +312,40 @@ clearEnemiesButton.addEventListener("click", () => {
     enemies.clearEnemies();
 });
 
-addArray.forEach((button, i) => {
-    let num =
-        i === 0
-            ? 4
-            : i === 1
-            ? 6
-            : i === 2
-            ? 8
-            : i === 3
-            ? 10
-            : i === 4
-            ? 12
-            : 20;
-    button.addEventListener("click", () => {
-        bag.addDice(num, holderArray[i]);
-    });
-});
-
-subArray.forEach((button, i) => {
-    let num =
-        i === 0
-            ? 4
-            : i === 1
-            ? 6
-            : i === 2
-            ? 8
-            : i === 3
-            ? 10
-            : i === 4
-            ? 12
-            : 20;
-    button.addEventListener("click", () => {
-        bag.removeDice(num, holderArray[i]);
-    });
-});
-
 acceptEnemyButton.addEventListener("click", () => {
     let name = enemyNameInput.value;
     let hp = parseInt(enemyHealthInput.value);
+    let maxHp = hp;
     if (!name || !hp || name.length > 15 || hp < 1 || hp > 999) {
         closeModal();
         return;
     }
-    enemies.addEnemy(name, hp);
+    enemies.addEnemy(name, maxHp, hp);
     closeModal();
 });
+
+enemyTable.addEventListener("click", (e) => {
+    if (
+        e.target.classList.contains("health-plus-btn") ||
+        e.target.classList.contains("health-minus-btn")
+    ) {
+        let id = e.target.id.slice(e.target.id.indexOf("-") + 1);
+        let enemy = enemies.enemyArray[id];
+        let hp = Number(document.getElementById(`input-${id}`).value);
+        let enemyHealthText = document
+            .getElementById(`enemy-${id}`)
+            .querySelector(".enemy-health");
+        if (e.target.classList.contains("health-plus-btn")) {
+            enemy.addHealth(hp);
+        } else {
+            enemy.subHealth(hp);
+        }
+        enemyHealthText.innerHTML = enemy.returnHealth();
+        document.getElementById(`input-${id}`).value = "";
+    }
+});
+
+// Modals
 
 closeModalButton.addEventListener("click", closeModal);
 
@@ -307,3 +354,34 @@ window.onclick = function (event) {
         closeModal();
     }
 };
+
+//=== localStorage ===//
+
+if (!localStorage.getItem("storedRollHist")) {
+    localStorage.setItem("storedRollHist", []);
+    history.rollArr = [];
+} else {
+    let arr = JSON.parse(localStorage.getItem("storedRollHist"));
+    history.rollArr = arr;
+    if (arr.length > 0) {
+        arr.forEach((number) => {
+            let newTd = document.createElement("td");
+            newTd.setAttribute("class", "history-td");
+            newTd.innerHTML = number;
+            rollTable.append(newTd);
+        });
+    }
+}
+
+if (!localStorage.getItem("storedEnemies")) {
+    localStorage.setItem("storedEnemies", []);
+    enemies.enemyArray = [];
+} else {
+    let arr = JSON.parse(localStorage.getItem("storedEnemies"));
+    console.log(arr);
+    if (arr.length > 0) {
+        arr.forEach((enemy) => {
+            enemies.loadExistingEnemy(enemy);
+        });
+    }
+}

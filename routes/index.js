@@ -3,6 +3,7 @@ const router = express.Router();
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 const Story = require("../models/Story");
+const Players = require("../models/Player");
 
 // @desc Login/Landing Page
 // @route GET /
@@ -14,16 +15,17 @@ router.get("/", ensureGuest, (req, res) => {
 
 // @desc DM Page
 // @route GET /dm
-router.get('/dm', ensureAuth, async (req, res) => {
+router.get("/dm", ensureAuth, async (req, res) => {
     try {
+        const players = await Players.find({}).lean();
         res.render("dm", {
-            layout: "dm"
-        })
+            layout: "dm",
+        });
     } catch (err) {
         console.error(err);
-        res.render("error/500")
+        res.render("error/500");
     }
-})
+});
 
 // @desc Dashboard
 // @route GET /dashboard
