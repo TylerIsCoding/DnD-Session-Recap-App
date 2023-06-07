@@ -26,6 +26,9 @@ td {
     --btn-red: #a34c50;
     --btn-red-hover: #d4666b;
     --btn-red-down: #6e3336;
+    --btn-blue: #4792b4;
+    --btn-blue-hover: #62c3f0;
+    --btn-blue-down: #2c5f79;
     /* Fonts */
     --dm-data-font: "Corben", cursive;
 }
@@ -40,12 +43,6 @@ body {
 
 p {
     margin: 10px 0 !important;
-}
-
-input[type="number"]:not(.browser-default),
-input[type="text"]:not(.browser-default) {
-    background-color: #494242;
-    color: white;
 }
 
 input::-webkit-outer-spin-button,
@@ -187,6 +184,14 @@ body.dm-body {
     backdrop-filter: blur(6px);
 }
 
+#addRemoveEnemy,
+#initAddPlayer {
+    display: none;
+    min-height: 100%;
+    width: 90%;
+    margin-left: 15px;
+}
+
 .modal {
     display: flex;
     justify-content: center;
@@ -220,6 +225,24 @@ body.dm-body {
     font-size: 1.5rem !important;
     width: 80%;
     text-align: center;
+    background-color: #383838 !important;
+    color: white;
+}
+
+.color-input {
+    color: #bdbdbd !important;
+    background-color: unset !important;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+}
+
+.colorPicker {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .close {
@@ -241,6 +264,8 @@ body.dm-body {
     box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.445),
         5px 5px 5px rgba(0, 0, 0, 0.5), inset -5px -5px 5px rgba(0, 0, 0, 0.281);
 }
+
+/* Modal Content */
 
 .dm-container {
     width: 100%;
@@ -363,6 +388,60 @@ body.dm-body {
     border: none;
 }
 
+.blue-btn {
+    background-color: var(--btn-blue);
+    color: white;
+    border: none;
+}
+
+.green-btn:focus {
+    background-color: var(--btn-green);
+}
+
+.green-btn:hover {
+    background-color: var(--btn-green-hover);
+}
+
+.green-btn:active {
+    background-color: var(--btn-green-down);
+}
+
+.blue-btn:focus {
+    background-color: var(--btn-blue);
+}
+
+.blue-btn:hover {
+    background-color: var(--btn-blue-hover);
+}
+
+.blue-btn:active {
+    background-color: var(--btn-blue-down);
+}
+
+.red-btn:focus {
+    background-color: var(--btn-red);
+}
+
+.red-btn:hover {
+    background-color: var(--btn-red-hover);
+}
+
+.red-btn:active {
+    background-color: var(--btn-red-down);
+}
+
+.roll-dice:focus {
+    background-color: #e94445;
+}
+
+.roll-dice:hover {
+    background-color: #ee2a2a;
+}
+
+.roll-dice:active {
+    background-color: #a12d2d;
+}
+
 .button-row {
     display: flex;
     flex-direction: row;
@@ -389,18 +468,6 @@ body.dm-body {
     height: 60px;
     width: 60px;
     border-radius: 20px;
-}
-
-.green-btn:focus {
-    background-color: var(--btn-green);
-}
-
-.green-btn:hover {
-    background-color: var(--btn-green-hover);
-}
-
-.green-btn:active {
-    background-color: var(--btn-green-down);
 }
 
 .sub-dice {
@@ -440,35 +507,11 @@ body.dm-body {
         inset -5px -5px 5px rgba(0, 0, 0, 0.281);
 }
 
-.roll-dice:focus {
-    background-color: #e94445;
-}
-
-.roll-dice:hover {
-    background-color: #ee2a2a;
-}
-
-.roll-dice:active {
-    background-color: #a12d2d;
-}
-
 .clear-btn {
     background-color: var(--btn-red);
     padding-top: 0.5rem;
     font-size: 2rem;
     height: 60px;
-}
-
-.red-btn:focus {
-    background-color: var(--btn-red);
-}
-
-.red-btn:hover {
-    background-color: var(--btn-red-hover);
-}
-
-.red-btn:active {
-    background-color: var(--btn-red-down);
 }
 
 /* Center DM Section */
@@ -510,20 +553,31 @@ body.dm-body {
 }
 
 .dice-history-holder::-webkit-scrollbar,
-.health-tracker-holder::-webkit-scrollbar {
+.health-tracker-holder::-webkit-scrollbar,
+.init-player-storage::-webkit-scrollbar {
     width: 10px;
 }
 
+td.enemy-name::-webkit-scrollbar {
+    height: 8px;
+}
+
 .dice-history-holder::-webkit-scrollbar-track,
-.health-tracker-holder::-webkit-scrollbar-track {
+.health-tracker-holder::-webkit-scrollbar-track,
+td.enemy-name::-webkit-scrollbar-track,
+.init-player-storage::-webkit-scrollbar-track {
     background: transparent;
     margin: 20px;
 }
 
 .dice-history-holder::-webkit-scrollbar-thumb,
-.health-tracker-holder::-webkit-scrollbar-thumb {
+.health-tracker-holder::-webkit-scrollbar-thumb,
+td.enemy-name::-webkit-scrollbar-thumb,
+.init-player-storage::-webkit-scrollbar-thumb {
     background-color: var(--btn-red);
     border-radius: 10px;
+    box-shadow: inset 5px 5px 10px rgba(255, 255, 255, 0.315),
+        inset -5px -5px 5px rgba(0, 0, 0, 0.281);
 }
 
 .history-bottom {
@@ -549,6 +603,11 @@ body.dm-body {
     font-family: var(--dm-data-font);
     font-size: 3rem;
     padding: 0;
+    white-space: nowrap;
+}
+
+.enemy-name {
+    overflow-y: hidden;
 }
 
 .health-tracker-container {
@@ -595,7 +654,11 @@ body.dm-body {
 }
 
 .enemy-info-row > td {
-    width: 200px;
+    width: 220px;
+}
+
+td.enemy-name {
+    width: 300px;
 }
 
 .enemy-buttons {
@@ -635,4 +698,98 @@ body.dm-body {
 
 .healDamageInputBox:focus {
     outline-width: 0;
+}
+
+/* Initiative Container */
+
+.init-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.init-title {
+    background-color: var(--btn-red);
+    text-align: center;
+    font-family: var(--dm-data-font);
+    font-size: 3rem;
+    color: white;
+    padding: 1rem;
+    width: 400px;
+    margin: 0 auto;
+    border-radius: 20px;
+    box-shadow: inset 5px 5px 10px rgba(255, 255, 255, 0.315),
+        5px 10px 10px rgba(0, 0, 0, 0.5),
+        inset -5px -5px 5px rgba(0, 0, 0, 0.281);
+}
+
+.init-player-storage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 90%;
+    min-height: 630px;
+    max-height: 630px;
+    overflow: auto;
+    background-color: var(--main-tan);
+    margin: 2rem;
+    border-radius: 20px;
+    box-shadow: inset 0px 8px 8px rgba(0, 0, 0, 0.74);
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.init-player {
+    font-family: var(--dm-data-font);
+    font-size: 2rem;
+    color: white;
+    background-color: #478c2f;
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    /* box-shadow: inset 5px 5px 10px rgba(255, 255, 255, 0.315),
+        5px 5px 5px rgba(0, 0, 0, 0.5), inset -5px -5px 5px rgba(0, 0, 0, 0.281); */
+}
+
+.init-button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.add-clear-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.add-player,
+.clear-players,
+.start-combat,
+.end-combat {
+    font-family: var(--dm-data-font);
+    font-size: 2.2rem;
+    height: 60px;
+    border-radius: 50px;
+    box-shadow: inset 5px 5px 10px rgba(255, 255, 255, 0.315),
+        5px 10px 10px rgba(0, 0, 0, 0.5),
+        inset -5px -5px 5px rgba(0, 0, 0, 0.281);
+    padding: 10px;
+}
+
+.start-combat,
+.end-combat {
+    width: 100%;
+}
+
+.add-player,
+.clear-players {
+    width: 200px;
 }

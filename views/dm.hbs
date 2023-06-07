@@ -1,75 +1,88 @@
-<section class="modal-section" id="enemyModal">
+<section class="modal-section" id="modal">
     <div class="modal">
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
-            <div class="inputs">
-                <input type="text" class="modal-input" id="enemyNameInput" placeholder="Enter name" required>
-                <input type="number" class="modal-input" id="enemyHealthInput" placeholder="Enter enemy's max HP" required>
-                <button class="acceptButton green-btn" id="acceptEnemy">Submit</button>
+            <div id="addRemoveEnemy">
+                <div class="inputs">
+                    <input type="text" class="modal-input" id="enemyNameInput" placeholder="Enter name" autocomplete="off"/>
+                    <input type="number" class="modal-input" id="enemyHealthInput" placeholder="Enter enemy's max HP" autocomplete="off"/>
+                    <button class="acceptButton green-btn" id="acceptEnemy" >Submit</button>
+                </div>
+            </div>
+            <div id="initAddPlayer">
+                <div class="inputs">
+                    <input type="text" class="modal-input" id="playerNameInput" placeholder="Enter name" autocomplete="off"/>
+                    <input type="number" class="modal-input" id="playerDexInput" placeholder="Enter dex modifier" autocomplete="off"/>
+                    <div class="colorPicker">
+                        <label for="playerColor" class="modal-input color-input">Choose color:</label>
+                        <input type="color" name="playerColor" id="playerColorInput" value="#C84141"/>
+                    </div>
+                    <button class="acceptButton green-btn" id="acceptPlayer">Submit</button>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<section class="dm-column side-box dm-dice-container">
-   <div class="dice-results">
-    <p class="dice-results-text" id="result-text"></p>
-   </div>
-   <div class="dice-main">
-            <div class="dice-images">
-                <img class="dice-image" src="/images/dice/d4.png" alt="d4">
-                <img class="dice-image" src="/images/dice/d6.png" alt="d6">
-                <img class="dice-image" src="/images/dice/d8.png" alt="d8">
-                <img class="dice-image" src="/images/dice/d10.png" alt="d10">
-                {{!-- <img class="dice-image" src="/images/dice/d100.png" alt="d100"> --}}
-                <img class="dice-image" src="/images/dice/d12.png" alt="d12">
-                <img class="dice-image" src="/images/dice/d20.png" alt="d20">
+<section class="dm-column side-box">
+    <div class="dice-results">
+        <p class="dice-results-text" id="result-text"></p>
+    </div>
+    <div class="dice-main">
+        <div class="dice-images">
+            <img class="dice-image" src="/images/dice/d4.png" alt="d4" />
+            <img class="dice-image" src="/images/dice/d6.png" alt="d6" />
+            <img class="dice-image" src="/images/dice/d8.png" alt="d8" />
+            <img class="dice-image" src="/images/dice/d10.png" alt="d10" />
+            {{! <img class="dice-image" src="/images/dice/d100.png" alt="d100"> }}
+            <img class="dice-image" src="/images/dice/d12.png" alt="d12" />
+            <img class="dice-image" src="/images/dice/d20.png" alt="d20" />
+        </div>
+        <div class="dice-numbers">
+            <div class="number-holder" id="d4-holder"></div>
+            <div class="number-holder" id="d6-holder"></div>
+            <div class="number-holder" id="d8-holder"></div>
+            <div class="number-holder" id="d10-holder"></div>
+            {{! <div class="number-holder" id="d100-holder"></div> }}
+            <div class="number-holder" id="d12-holder"></div>
+            <div class="number-holder" id="d20-holder"></div>
+        </div>
+        <div class="dice-buttons">
+            <div class="button-row">
+                <button class="add-dice green-btn" id="add-d4">+</button>
+                <button class="sub-dice red-btn" id="sub-d4">-</button>
             </div>
-            <div class="dice-numbers">
-                <div class="number-holder" id="d4-holder"></div>
-                <div class="number-holder" id="d6-holder"></div>
-                <div class="number-holder" id="d8-holder"></div>
-                <div class="number-holder" id="d10-holder"></div>
-                {{!-- <div class="number-holder" id="d100-holder"></div> --}}
-                <div class="number-holder" id="d12-holder"></div>
-                <div class="number-holder" id="d20-holder"></div>
+            <div class="button-row">
+                <button class="add-dice green-btn" id="add-d6">+</button>
+                <button class="sub-dice red-btn" id="sub-d6">-</button>
             </div>
-            <div class="dice-buttons">
-                <div class="button-row">
-                    <button class="add-dice green-btn" id="add-d4">+</button>
-                    <button class="sub-dice red-btn" id="sub-d4">-</button>
-                </div>
-                <div class="button-row">
-                    <button class="add-dice green-btn" id="add-d6">+</button>
-                    <button class="sub-dice red-btn" id="sub-d6">-</button>
-                </div>
-                <div class="button-row">
-                    <button class="add-dice green-btn" id="add-d8">+</button>
-                    <button class="sub-dice red-btn" id="sub-d8">-</button>
-                </div>
-                <div class="button-row">
-                    <button class="add-dice green-btn" id="add-d10">+</button>
-                    <button class="sub-dice red-btn" id="sub-d10">-</button>
-                </div>
-                {{!-- <div class="button-row">
+            <div class="button-row">
+                <button class="add-dice green-btn" id="add-d8">+</button>
+                <button class="sub-dice red-btn" id="sub-d8">-</button>
+            </div>
+            <div class="button-row">
+                <button class="add-dice green-btn" id="add-d10">+</button>
+                <button class="sub-dice red-btn" id="sub-d10">-</button>
+            </div>
+            {{! <div class="button-row">
                     <button class="add-dice green-btn" id="add-d100">+</button>
                     <button class="sub-dice green-btn" id="sub-d100">-</button>
-                </div> --}}
-                <div class="button-row">
-                    <button class="add-dice green-btn" id="add-d12">+</button>
-                    <button class="sub-dice red-btn" id="sub-d12">-</button>
-                </div>
-                <div class="button-row">
-                    <button class="add-dice green-btn" id="add-d20">+</button>
-                    <button class="sub-dice red-btn" id="sub-d20">-</button>
-                </div>
+                </div> }}
+            <div class="button-row">
+                <button class="add-dice green-btn" id="add-d12">+</button>
+                <button class="sub-dice red-btn" id="sub-d12">-</button>
             </div>
-   </div>
-   <div class="dice-roll">
+            <div class="button-row">
+                <button class="add-dice green-btn" id="add-d20">+</button>
+                <button class="sub-dice red-btn" id="sub-d20">-</button>
+            </div>
+        </div>
+    </div>
+    <div class="dice-roll">
         <button class="roll-dice" id="roll-btn">Roll</button>
-   </div>
-   <div class="clear">
+    </div>
+    <div class="clear">
         <button class="clear-btn red-btn" id="dice-clear-btn">Clear</button>
-   </div>
+    </div>
 </section>
 
 <section class="dm-column center-box">
@@ -82,7 +95,7 @@
             </table>
         </div>
         <div class="clear history-bottom">
-            <button class="history-clear clear-btn red-btn" id="history-clear-btn">Clear</button>
+            <button class="history-clear clear-btn red-btn" id="history-clear-btn" >Clear</button>
         </div>
     </section>
     <section class="health-tracker-container">
@@ -95,11 +108,23 @@
         </div>
         <div class="clear health-tracker-bottom">
             <button class="enemy-add green-btn" id="add-enemy">Add</button>
-            <button class="enemy-clear red-btn" id="clear-enemies">Clear</button>
+            <button class="enemy-clear red-btn" id="clear-enemies" >Clear</button>
         </div>
     </section>
 </section>
 
-<section class="dm-column side-box dm-initiative-container">
-   
+<section class="dm-column side-box init-container">
+    <div class="init-title">
+        Initiative
+    </div>
+    <div class="init-player-storage" id="playerStorage">
+    </div>
+    <div class="init-button-container" id="init-button-container">
+        <div class="add-clear-container">
+            <button class="add-player green-btn" id="add-player">Add Player</button>
+            <button class="clear-players red-btn" id="clear-players">Clear All</button>
+        </div>
+        <button class="start-combat blue-btn" id="start-combat">Start Encounter</button>
+        <button class="end-combat red-btn" id="end-combat">End Encounter</button>
+    </div>
 </section>

@@ -1,14 +1,21 @@
 // Modals
-const addEnemyModal = document.getElementById("enemyModal");
+const modal = document.getElementById("modal");
 
 // Text boxes / inputs
 const results = document.getElementById("result-text");
 const enemyNameInput = document.getElementById("enemyNameInput");
 const enemyHealthInput = document.getElementById("enemyHealthInput");
+const playerNameInput = document.getElementById("playerNameInput");
+const playerDexInput = document.getElementById("playerDexInput");
+const playerColorInput = document.getElementById("playerColorInput");
+const addRemoveEnemyDiv = document.getElementById("addRemoveEnemy");
+const initAddPlayerDiv = document.getElementById("initAddPlayer");
 
-// Tables
+// Tables and containers
 const rollTable = document.getElementById("history-table-row");
 const enemyTable = document.getElementById("enemy-table");
+const initButtons = document.getElementById("init-button-container");
+const initPlayerStorage = document.getElementById("playerStorage");
 
 // Audio
 const rollSound = new Audio("/audio/roll.wav");
@@ -49,8 +56,10 @@ const clearDiceButton = document.getElementById("dice-clear-btn");
 const rollButton = document.getElementById("roll-btn");
 const rollHistoryClearButton = document.getElementById("history-clear-btn");
 const addEnemyButton = document.getElementById("add-enemy");
+const addPlayerButton = document.getElementById("add-player");
 const clearEnemiesButton = document.getElementById("clear-enemies");
 const acceptEnemyButton = document.getElementById("acceptEnemy");
+const acceptPlayerButton = document.getElementById("acceptPlayer");
 
 // Classes
 
@@ -208,10 +217,31 @@ class Enemies {
     }
 }
 
+class Player {
+    constructor(name, dex, color) {
+        this.name = name;
+        this.dex = dex;
+        this.color = color;
+    }
+}
+
+class Players {
+    constructor() {
+        this.playersArr = [];
+    }
+    clear() {
+        this.playersArr = [];
+        while (initPlayerStorage.firstChild) {
+            initPlayerStorage.removeChild(initPlayerStorage.firstChild);
+        }
+    }
+}
+
 // Instantiation
 
 const bag = new Bag();
 const enemies = new Enemies();
+const players = new Players();
 let history = new rollHistory();
 
 let addArray = [
@@ -244,7 +274,12 @@ let subArray = [
 function closeModal() {
     enemyNameInput.value = "";
     enemyHealthInput.value = "";
-    addEnemyModal.style.display = "none";
+    playerNameInput.value = "";
+    playerDexInput.value = "";
+    playerColorInput.value = "#C84141";
+    modal.style.display = "none";
+    addRemoveEnemyDiv.style.display = "none";
+    initAddPlayerDiv.style.display = "none";
 }
 
 function createTableData(enemy) {
@@ -267,6 +302,14 @@ function createTableData(enemy) {
     enemyTable.append(newTr);
 }
 
+function createPlayer(player) {
+    let newDiv = document.createElement("div");
+    newDiv.setAttribute("class", "init-player");
+    newDiv.innerHTML = player.name;
+    newDiv.style.backgroundColor = player.color;
+    initPlayerStorage.append(newDiv);
+}
+
 //=== Event Listeners ===//
 
 // Dice
@@ -282,7 +325,6 @@ addArray.forEach((button, i) => {
 subArray.forEach((button, i) => {
     let keyVals = { 0: 4, 1: 6, 2: 8, 3: 10, 4: 12, 5: 20 };
     let num = Object.values(keyVals)[i];
-    console.log(num);
     button.addEventListener("click", () => {
         bag.removeDice(num, holderArray[i]);
     });
@@ -305,7 +347,8 @@ rollHistoryClearButton.addEventListener("click", history.clear);
 // Health Tracker
 
 addEnemyButton.addEventListener("click", () => {
-    addEnemyModal.style.display = "flex";
+    modal.style.display = "flex";
+    addRemoveEnemyDiv.style.display = "flex";
 });
 
 clearEnemiesButton.addEventListener("click", () => {
@@ -316,11 +359,23 @@ acceptEnemyButton.addEventListener("click", () => {
     let name = enemyNameInput.value;
     let hp = parseInt(enemyHealthInput.value);
     let maxHp = hp;
-    if (!name || !hp || name.length > 15 || hp < 1 || hp > 999) {
+    if (!name || !hp || hp < 1 || hp > 999) {
         closeModal();
         return;
     }
     enemies.addEnemy(name, maxHp, hp);
+    closeModal();
+});
+
+acceptPlayerButton.addEventListener("click", () => {
+    let name = playerNameInput.value;
+    let dex = parseInt(playerDexInput.value);
+    let color = playerColorInput.value;
+    if (name && dex && color) {
+        let player = new Player(name, dex, color);
+        players.playersArr.push(player);
+        createPlayer(player);
+    }
     closeModal();
 });
 
@@ -345,12 +400,26 @@ enemyTable.addEventListener("click", (e) => {
     }
 });
 
+initButtons.addEventListener("click", (e) => {
+    if (e.target.id === "add-player") {
+        modal.style.display = "flex";
+        initAddPlayerDiv.style.display = "flex";
+        initAddPlayerDiv.style.height = "100%";
+    } else if (e.target.id === "clear-players") {
+        players.clear();
+    } else if (e.target.id === "start-combat") {
+        console.log("START COMBAT!");
+    } else if (e.target.id === "end-combat") {
+        console.log("END COMBAT!");
+    }
+});
+
 // Modals
 
 closeModalButton.addEventListener("click", closeModal);
 
-window.onclick = function (event) {
-    if (event.target == addEnemyModal) {
+window.onclick = function (e) {
+    if (e.target == modal) {
         closeModal();
     }
 };
