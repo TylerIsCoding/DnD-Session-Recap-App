@@ -185,11 +185,18 @@ body.dm-body {
 }
 
 #addRemoveEnemy,
-#initAddPlayer {
+#initAddPlayer,
+#initEnterRolls {
     display: none;
     min-height: 100%;
     width: 90%;
     margin-left: 15px;
+}
+
+#initRollNameHolder {
+    font-family: var(--dm-data-font);
+    font-size: 2.5rem;
+    text-align: center;
 }
 
 .modal {

@@ -10,12 +10,15 @@ const playerDexInput = document.getElementById("playerDexInput");
 const playerColorInput = document.getElementById("playerColorInput");
 const addRemoveEnemyDiv = document.getElementById("addRemoveEnemy");
 const initAddPlayerDiv = document.getElementById("initAddPlayer");
+const playerRollInput = document.getElementById("initEnterRolls");
 
 // Tables and containers
 const rollTable = document.getElementById("history-table-row");
 const enemyTable = document.getElementById("enemy-table");
 const initButtons = document.getElementById("init-button-container");
 const initPlayerStorage = document.getElementById("playerStorage");
+const initPlayerRollInput = document.getElementById("playerRollInput");
+const initNameHolder = document.getElementById("initRollNameHolder");
 
 // Audio
 const rollSound = new Audio("/audio/roll.wav");
@@ -60,6 +63,7 @@ const addPlayerButton = document.getElementById("add-player");
 const clearEnemiesButton = document.getElementById("clear-enemies");
 const acceptEnemyButton = document.getElementById("acceptEnemy");
 const acceptPlayerButton = document.getElementById("acceptPlayer");
+const acceptInitRollButton = document.getElementById("acceptRoll");
 
 // Classes
 
@@ -222,6 +226,10 @@ class Player {
         this.name = name;
         this.dex = dex;
         this.color = color;
+        this.init = 0;
+    }
+    setInit(roll) {
+        this.init = Number(roll) + this.dex;
     }
 }
 
@@ -234,6 +242,12 @@ class Players {
         while (initPlayerStorage.firstChild) {
             initPlayerStorage.removeChild(initPlayerStorage.firstChild);
         }
+    }
+    startCombat(index) {
+        let currentPlayer = this.playersArr[index];
+        modal.style.display = "flex";
+        initEnterRolls.style.display = "flex";
+        initNameHolder.innerHTML = currentPlayer.name;
     }
 }
 
@@ -280,6 +294,9 @@ function closeModal() {
     modal.style.display = "none";
     addRemoveEnemyDiv.style.display = "none";
     initAddPlayerDiv.style.display = "none";
+    playerRollInput.style.display = "none";
+    initNameHolder.innerHTML = "";
+    initPlayerRollInput.value = "";
 }
 
 function createTableData(enemy) {
@@ -400,6 +417,8 @@ enemyTable.addEventListener("click", (e) => {
     }
 });
 
+// Initiative Tracker
+
 initButtons.addEventListener("click", (e) => {
     if (e.target.id === "add-player") {
         modal.style.display = "flex";
@@ -408,7 +427,10 @@ initButtons.addEventListener("click", (e) => {
     } else if (e.target.id === "clear-players") {
         players.clear();
     } else if (e.target.id === "start-combat") {
-        console.log("START COMBAT!");
+        if (players.playersArr.length > 1) {
+            console.log("START COMBAT!");
+            players.startCombat(0);
+        }
     } else if (e.target.id === "end-combat") {
         console.log("END COMBAT!");
     }
