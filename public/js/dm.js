@@ -1,4 +1,7 @@
-// Modals
+// Audio
+const rollSound = new Audio("/audio/roll.wav");
+
+// Modal
 const modal = document.getElementById("modal");
 
 // Text boxes / inputs
@@ -19,9 +22,6 @@ const initButtons = document.getElementById("init-button-container");
 const initPlayerStorage = document.getElementById("playerStorage");
 const initPlayerRollInput = document.getElementById("playerRollInput");
 const initNameHolder = document.getElementById("initRollNameHolder");
-
-// Audio
-const rollSound = new Audio("/audio/roll.wav");
 
 // D4
 const addD4Button = document.getElementById("add-d4");
@@ -181,6 +181,25 @@ class Enemy {
     returnHealth() {
         return `${this.hp}/${this.maxHp}`;
     }
+    createTableData() {
+        let newTr = document.createElement("tr");
+        let nameTd = document.createElement("td");
+        let healthTd = document.createElement("td");
+        let healDamageFieldTd = document.createElement("td");
+        let buttonsTd = document.createElement("td");
+        newTr.setAttribute("class", "enemy-info-row");
+        newTr.setAttribute("id", `enemy-${this.id}`);
+        nameTd.setAttribute("class", "enemy-name");
+        healthTd.setAttribute("class", "enemy-health");
+        healDamageFieldTd.setAttribute("class", "healDamageInput");
+        buttonsTd.setAttribute("class", "enemy-buttons");
+        nameTd.innerHTML = this.name;
+        healthTd.innerHTML = this.returnHealth();
+        healDamageFieldTd.innerHTML = `<input type="number" id="input-${this.id}" class="healDamageInputBox">`;
+        buttonsTd.innerHTML = `<button class="health-plus-btn green-btn" id="heal-${this.id}">+</button><button class="health-minus-btn red-btn" id="damage-${this.id}">-</button>`;
+        newTr.append(nameTd, healthTd, healDamageFieldTd, buttonsTd);
+        enemyTable.append(newTr);
+    }
 }
 
 class Enemies {
@@ -192,7 +211,7 @@ class Enemies {
         let newEnemy = new Enemy(name, maxHp, hp, id);
         this.enemyArray.push(newEnemy);
         localStorage.setItem("storedEnemies", JSON.stringify(this.enemyArray));
-        createTableData(newEnemy);
+        newEnemy.createTableData();
     }
     loadExistingEnemy(enemy) {
         let id = enemy.id;
@@ -201,7 +220,7 @@ class Enemies {
         let hp = enemy.hp;
         let newEnemy = new Enemy(name, maxHp, hp, id);
         this.enemyArray.push(newEnemy);
-        createTableData(newEnemy);
+        newEnemy.createTableData();
     }
     clearEnemies() {
         this.enemyArray = [];
@@ -222,14 +241,21 @@ class Enemies {
 }
 
 class Player {
-    constructor(name, dex, color) {
+    constructor(name, dex, color, init = 0) {
         this.name = name;
         this.dex = dex;
         this.color = color;
-        this.init = 0;
+        this.init = init;
     }
     setInit(roll) {
         this.init = Number(roll) + this.dex;
+    }
+    createPlayer() {
+        let newDiv = document.createElement("div");
+        newDiv.setAttribute("class", "init-player");
+        newDiv.innerHTML = this.name;
+        newDiv.style.backgroundColor = this.color;
+        initPlayerStorage.append(newDiv);
     }
 }
 
@@ -242,12 +268,46 @@ class Players {
         while (initPlayerStorage.firstChild) {
             initPlayerStorage.removeChild(initPlayerStorage.firstChild);
         }
+        localStorage.removeItem("storedPlayers");
     }
     startCombat(index) {
-        let currentPlayer = this.playersArr[index];
+        let current = this.playersArr[index];
         modal.style.display = "flex";
-        initEnterRolls.style.display = "flex";
-        initNameHolder.innerHTML = currentPlayer.name;
+        playerRollInput.style.display = "flex";
+        initNameHolder.innerHTML = current.name;
+        initPlayerRollInput.value = "";
+        acceptInitRollButton.addEventListener("click", () => {
+            let current = this.playersArr[index];
+            index++;
+            let roll = initPlayerRollInput.value;
+            if (roll > 0) {
+                current.setInit(roll);
+                closeModal();
+                if (this.playersArr[index]) {
+                    setTimeout(this.startCombat(index), 8000);
+                } else {
+                    this.sortAndStart();
+                }
+            }
+        });
+    }
+    loadExistingPlayers(player) {
+        let name = player.name;
+        let dex = player.dex;
+        let color = player.color;
+        let init = player.init;
+        let newPlayer = new Player(name, dex, color, init);
+        this.playersArr.push(newPlayer);
+        newPlayer.createPlayer();
+    }
+    sortAndStart() {
+        let sorted = this.playersArr.sort((a, b) => b.init - a.init);
+        this.clear();
+        sorted.forEach((player) => {
+            this.playersArr.push(player);
+            player.createPlayer();
+        });
+        localStorage.setItem("storedPlayers", JSON.stringify(sorted));
     }
 }
 
@@ -297,34 +357,6 @@ function closeModal() {
     playerRollInput.style.display = "none";
     initNameHolder.innerHTML = "";
     initPlayerRollInput.value = "";
-}
-
-function createTableData(enemy) {
-    let newTr = document.createElement("tr");
-    let nameTd = document.createElement("td");
-    let healthTd = document.createElement("td");
-    let healDamageFieldTd = document.createElement("td");
-    let buttonsTd = document.createElement("td");
-    newTr.setAttribute("class", "enemy-info-row");
-    newTr.setAttribute("id", `enemy-${enemy.id}`);
-    nameTd.setAttribute("class", "enemy-name");
-    healthTd.setAttribute("class", "enemy-health");
-    healDamageFieldTd.setAttribute("class", "healDamageInput");
-    buttonsTd.setAttribute("class", "enemy-buttons");
-    nameTd.innerHTML = enemy.name;
-    healthTd.innerHTML = enemy.returnHealth();
-    healDamageFieldTd.innerHTML = `<input type="number" id="input-${enemy.id}" class="healDamageInputBox">`;
-    buttonsTd.innerHTML = `<button class="health-plus-btn green-btn" id="heal-${enemy.id}">+</button><button class="health-minus-btn red-btn" id="damage-${enemy.id}">-</button>`;
-    newTr.append(nameTd, healthTd, healDamageFieldTd, buttonsTd);
-    enemyTable.append(newTr);
-}
-
-function createPlayer(player) {
-    let newDiv = document.createElement("div");
-    newDiv.setAttribute("class", "init-player");
-    newDiv.innerHTML = player.name;
-    newDiv.style.backgroundColor = player.color;
-    initPlayerStorage.append(newDiv);
 }
 
 //=== Event Listeners ===//
@@ -386,12 +418,16 @@ acceptEnemyButton.addEventListener("click", () => {
 
 acceptPlayerButton.addEventListener("click", () => {
     let name = playerNameInput.value;
-    let dex = parseInt(playerDexInput.value);
+    let dex = parseInt(playerDexInput.value) || 0;
     let color = playerColorInput.value;
-    if (name && dex && color) {
+    if (name && color) {
         let player = new Player(name, dex, color);
         players.playersArr.push(player);
-        createPlayer(player);
+        localStorage.setItem(
+            "storedPlayers",
+            JSON.stringify(players.playersArr)
+        );
+        player.createPlayer();
     }
     closeModal();
 });
@@ -448,6 +484,8 @@ window.onclick = function (e) {
 
 //=== localStorage ===//
 
+// Roll History
+
 if (!localStorage.getItem("storedRollHist")) {
     localStorage.setItem("storedRollHist", []);
     history.rollArr = [];
@@ -464,6 +502,8 @@ if (!localStorage.getItem("storedRollHist")) {
     }
 }
 
+// Enemy Health Tracker
+
 if (!localStorage.getItem("storedEnemies")) {
     localStorage.setItem("storedEnemies", []);
     enemies.enemyArray = [];
@@ -473,6 +513,21 @@ if (!localStorage.getItem("storedEnemies")) {
     if (arr.length > 0) {
         arr.forEach((enemy) => {
             enemies.loadExistingEnemy(enemy);
+        });
+    }
+}
+
+// Initiative Tracker
+
+if (!localStorage.getItem("storedPlayers")) {
+    localStorage.setItem("storedPlayers", []);
+    players.playersArr = [];
+} else {
+    let arr = JSON.parse(localStorage.getItem("storedPlayers"));
+    console.log(arr);
+    if (arr.length > 0) {
+        arr.forEach((player) => {
+            players.loadExistingPlayers(player);
         });
     }
 }
