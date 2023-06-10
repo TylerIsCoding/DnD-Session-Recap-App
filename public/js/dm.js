@@ -14,6 +14,7 @@ const playerColorInput = document.getElementById("playerColorInput");
 const addRemoveEnemyDiv = document.getElementById("addRemoveEnemy");
 const initAddPlayerDiv = document.getElementById("initAddPlayer");
 const playerRollInput = document.getElementById("initEnterRolls");
+const initTitle = document.getElementById("init-title");
 
 // Tables and containers
 const rollTable = document.getElementById("history-table-row");
@@ -60,10 +61,14 @@ const rollButton = document.getElementById("roll-btn");
 const rollHistoryClearButton = document.getElementById("history-clear-btn");
 const addEnemyButton = document.getElementById("add-enemy");
 const addPlayerButton = document.getElementById("add-player");
+const clearPlayersButton = document.getElementById("clear-players");
 const clearEnemiesButton = document.getElementById("clear-enemies");
 const acceptEnemyButton = document.getElementById("acceptEnemy");
 const acceptPlayerButton = document.getElementById("acceptPlayer");
 const acceptInitRollButton = document.getElementById("acceptRoll");
+const startCombatButton = document.getElementById("start-combat");
+const nextTurnButton = document.getElementById("next-turn");
+const endCombatButton = document.getElementById("end-combat");
 
 // Classes
 
@@ -284,9 +289,10 @@ class Players {
                 current.setInit(roll);
                 closeModal();
                 if (this.playersArr[index]) {
-                    setTimeout(this.startCombat(index), 8000);
+                    setTimeout(this.startCombat(index), 2000);
                 } else {
-                    this.sortAndStart();
+                    this.sortPlayers();
+                    this.nextTurn(0);
                 }
             }
         });
@@ -300,7 +306,11 @@ class Players {
         this.playersArr.push(newPlayer);
         newPlayer.createPlayer();
     }
-    sortAndStart() {
+    sortPlayers() {
+        startCombatButton.classList.add("hidden");
+        nextTurnButton.classList.remove("hidden");
+        addPlayerButton.classList.add("disabled");
+        clearPlayersButton.classList.add("disabled");
         let sorted = this.playersArr.sort((a, b) => b.init - a.init);
         this.clear();
         sorted.forEach((player) => {
@@ -308,6 +318,18 @@ class Players {
             player.createPlayer();
         });
         localStorage.setItem("storedPlayers", JSON.stringify(sorted));
+    }
+    nextTurn() {
+        let currentPlayer = this.playersArr[0];
+        initTitle.style.backgroundColor = currentPlayer.color;
+        initTitle.innerText = currentPlayer.name;
+        // let players = document.getElementsByClassName("init-player");
+        // players[0].classList.add("hidden");
+        nextTurnButton.addEventListener("click", () => {
+            let removed = this.playersArr.shift();
+            this.playersArr.push(removed);
+            console.log(removed, this.playersArr);
+        });
     }
 }
 
