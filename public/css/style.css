@@ -934,7 +934,7 @@ td.enemy-name {
     }
 
     .init-player-storage {
-        min-height: 475px;
+        min-height: 450px;
         gap: 1.2rem;
     }
 
