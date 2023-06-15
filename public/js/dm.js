@@ -275,12 +275,51 @@ class Players {
         }
         localStorage.removeItem("storedPlayers");
     }
+    loadExistingPlayers(player) {
+        let name = player.name;
+        let dex = player.dex;
+        let color = player.color;
+        let init = player.init;
+        let newPlayer = new Player(name, dex, color, init);
+        this.playersArr.push(newPlayer);
+        newPlayer.createPlayer();
+    }
+    renderPlayers(inputArr) {
+        let stored = [...inputArr];
+        this.clear();
+        stored.forEach((player) => {
+            this.playersArr.push(player);
+            player.createPlayer();
+        });
+        localStorage.setItem("storedPlayers", JSON.stringify(stored));
+    }
+    sortPlayers() {
+        let sorted = this.playersArr.sort((a, b) => b.init - a.init);
+        this.renderPlayers(sorted);
+    }
+    showInitButtons() {
+        initTitle.innerText = "Initiative";
+        initTitle.style.backgroundColor = "#a34c50";
+        startCombatButton.classList.remove("hidden");
+        nextTurnButton.classList.add("hidden");
+        addPlayerButton.classList.remove("disabled");
+        clearPlayersButton.classList.remove("disabled");
+        endCombatButton.classList.add("disabled");
+    }
+    hideInitButtons(current) {
+        initNameHolder.innerHTML = current.name;
+        initPlayerRollInput.value = "";
+        startCombatButton.classList.add("hidden");
+        nextTurnButton.classList.remove("hidden");
+        addPlayerButton.classList.add("disabled");
+        clearPlayersButton.classList.add("disabled");
+        endCombatButton.classList.remove("disabled");
+    }
     startCombat(index) {
         let current = this.playersArr[index];
         modal.style.display = "flex";
         playerRollInput.style.display = "flex";
-        initNameHolder.innerHTML = current.name;
-        initPlayerRollInput.value = "";
+        this.hideInitButtons(current);
         acceptInitRollButton.addEventListener("click", () => {
             let current = this.playersArr[index];
             index++;
@@ -292,44 +331,25 @@ class Players {
                     setTimeout(this.startCombat(index), 2000);
                 } else {
                     this.sortPlayers();
-                    this.nextTurn(0);
+                    this.nextTurn();
                 }
             }
         });
     }
-    loadExistingPlayers(player) {
-        let name = player.name;
-        let dex = player.dex;
-        let color = player.color;
-        let init = player.init;
-        let newPlayer = new Player(name, dex, color, init);
-        this.playersArr.push(newPlayer);
-        newPlayer.createPlayer();
-    }
-    sortPlayers() {
-        startCombatButton.classList.add("hidden");
-        nextTurnButton.classList.remove("hidden");
-        addPlayerButton.classList.add("disabled");
-        clearPlayersButton.classList.add("disabled");
-        let sorted = this.playersArr.sort((a, b) => b.init - a.init);
-        this.clear();
-        sorted.forEach((player) => {
-            this.playersArr.push(player);
-            player.createPlayer();
-        });
-        localStorage.setItem("storedPlayers", JSON.stringify(sorted));
+    endCombat() {
+        this.showInitButtons();
+        let players = document.getElementsByClassName("init-player");
+        players[0].classList.remove("hidden");
     }
     nextTurn() {
+        this.renderPlayers(this.playersArr);
         let currentPlayer = this.playersArr[0];
         initTitle.style.backgroundColor = currentPlayer.color;
         initTitle.innerText = currentPlayer.name;
-        // let players = document.getElementsByClassName("init-player");
-        // players[0].classList.add("hidden");
-        nextTurnButton.addEventListener("click", () => {
-            let removed = this.playersArr.shift();
-            this.playersArr.push(removed);
-            console.log(removed, this.playersArr);
-        });
+        let removed = this.playersArr.shift();
+        this.playersArr.push(removed);
+        let players = document.getElementsByClassName("init-player");
+        players[0].classList.add("hidden");
     }
 }
 
@@ -478,7 +498,9 @@ enemyTable.addEventListener("click", (e) => {
 // Initiative Tracker
 
 initButtons.addEventListener("click", (e) => {
-    if (e.target.id === "add-player") {
+    if (e.target.closest(".disabled")) {
+        e.stopPropagation();
+    } else if (e.target.id === "add-player") {
         modal.style.display = "flex";
         initAddPlayerDiv.style.display = "flex";
         initAddPlayerDiv.style.height = "100%";
@@ -486,11 +508,12 @@ initButtons.addEventListener("click", (e) => {
         players.clear();
     } else if (e.target.id === "start-combat") {
         if (players.playersArr.length > 1) {
-            console.log("START COMBAT!");
             players.startCombat(0);
         }
     } else if (e.target.id === "end-combat") {
-        console.log("END COMBAT!");
+        players.endCombat();
+    } else if (e.target.id === "next-turn") {
+        players.nextTurn();
     }
 });
 
