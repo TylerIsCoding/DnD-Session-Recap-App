@@ -826,7 +826,7 @@ td.enemy-name {
 
 @media screen and (max-width: 1920px) {
     .main-container {
-        margin: 0;
+        margin: 1rem;
     }
 
     .dm-container {
