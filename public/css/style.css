@@ -285,7 +285,10 @@ body.dm-body {
 
 .main-dm-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .dm-column {
@@ -542,7 +545,7 @@ body.dm-body {
     justify-content: center;
     align-items: center;
     width: 20%;
-    min-width: 240px;
+    /* min-width: 240px; */
     margin: 20px;
 }
 
@@ -761,8 +764,9 @@ td.enemy-name {
     width: 100%;
     text-align: center;
     border-radius: 10px;
-    /* box-shadow: inset 5px 5px 10px rgba(255, 255, 255, 0.315),
-        5px 5px 5px rgba(0, 0, 0, 0.5), inset -5px -5px 5px rgba(0, 0, 0, 0.281); */
+    box-shadow: inset 5px 5px 8px rgba(255, 255, 255, 0.562),
+        5px 5px 5px rgba(0, 0, 0, 0.137),
+        inset -5px -5px 5px rgba(0, 0, 0, 0.281);
 }
 
 .init-button-container {
@@ -818,4 +822,151 @@ td.enemy-name {
 
 .disabled:focus {
     background-color: gray;
+}
+
+@media screen and (max-width: 1920px) {
+    .main-container {
+        margin: 0;
+    }
+
+    .dm-container {
+        padding: 1rem;
+    }
+
+    .dm-column.dm-column.side-box {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Roll container */
+
+    .dice-results-text {
+        height: 75px;
+    }
+
+    .dice-results-text {
+        min-width: 70%;
+    }
+
+    .dice-images {
+        width: 90px;
+    }
+
+    .dice-image {
+        height: 80px;
+        max-width: 80px;
+    }
+
+    .number-holder {
+        height: 80px;
+        min-width: 60px;
+    }
+
+    .button-row {
+        height: 80px;
+    }
+
+    .dice-buttons {
+        margin-left: unset;
+    }
+
+    .dice-roll,
+    .clear {
+        margin: 1rem;
+    }
+
+    .roll-dice,
+    .clear-btn {
+        width: 200px;
+    }
+
+    /* Roll history container */
+
+    .history-td {
+        font-size: 2.5rem;
+    }
+
+    .dice-history-container {
+        width: 25%;
+    }
+
+    .dice-history-top-text,
+    .health-tracker-top-text {
+        font-size: 2rem;
+        margin: 20px;
+    }
+
+    .dice-history-holder,
+    .health-tracker-holder {
+        height: 600px;
+        padding: 15px;
+    }
+
+    /* Health tracker container */
+
+    .health-tracker-container {
+        min-width: unset;
+    }
+
+    .enemy-info-row > td {
+        width: 100%;
+        font-size: 2rem;
+        padding: 5px;
+    }
+
+    .healDamageInputBox {
+        padding: 5px !important;
+        width: 80px !important;
+    }
+
+    td.healDamageInput {
+        width: 100px;
+    }
+
+    /* Initiative container */
+
+    .init-title {
+        font-size: 2.5rem;
+        width: 80%;
+    }
+
+    .init-player-storage {
+        min-height: 475px;
+        gap: 1.2rem;
+    }
+
+    .init-player {
+        padding: 10px;
+    }
+
+    .add-player,
+    .clear-players {
+        width: 150px;
+    }
+
+    .add-player,
+    .clear-players,
+    .start-combat,
+    .next,
+    .end-combat {
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 1600px) {
+}
+
+@media screen and (max-width: 1536px) {
+}
+
+@media screen and (max-width: 1440px) {
+}
+
+@media screen and (max-width: 1366px) {
+}
+
+@media screen and (max-width: 1280px) {
 }
