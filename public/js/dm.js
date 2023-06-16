@@ -328,7 +328,7 @@ class Players {
                 current.setInit(roll);
                 closeModal();
                 if (this.playersArr[index]) {
-                    setTimeout(this.startCombat(index), 2000);
+                    setTimeout(this.startCombat(index), 1000);
                 } else {
                     this.sortPlayers();
                     this.nextTurn();
