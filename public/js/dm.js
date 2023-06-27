@@ -462,7 +462,7 @@ acceptPlayerButton.addEventListener("click", () => {
     let name = playerNameInput.value;
     let dex = parseInt(playerDexInput.value) || 0;
     let color = playerColorInput.value;
-    if (name && color) {
+    if (name && color && name.length <= 10) {
         let player = new Player(name, dex, color);
         players.playersArr.push(player);
         localStorage.setItem(
